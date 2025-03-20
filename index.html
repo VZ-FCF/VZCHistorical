@@ -428,6 +428,7 @@
             style: style_MunicipalBoundaries_3_0,
         });
         bounds_group.addLayer(layer_MunicipalBoundaries_3);
+        map.addLayer(layer_MunicipalBoundaries_3);
         function pop_Cemeteries_4(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
@@ -601,7 +602,6 @@
             },
         });
         bounds_group.addLayer(layer_HistoricalPlaces_6);
-        map.addLayer(layer_HistoricalPlaces_6);
         function pop_FlowingStreams_7(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
@@ -689,7 +689,6 @@
             },
         });
         bounds_group.addLayer(layer_CensusDesignatedPlaces_8);
-        map.addLayer(layer_CensusDesignatedPlaces_8);
         var overlaysTree = [
             {label: '<img src="legend/CensusDesignatedPlaces_8.png" /> CensusDesignatedPlaces', layer: layer_CensusDesignatedPlaces_8},
             {label: '<img src="legend/FlowingStreams_7.png" /> FlowingStreams', layer: layer_FlowingStreams_7},
