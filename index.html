@@ -504,9 +504,6 @@
                         <td class="visible-with-data" id="longitude">' + (feature.properties['longitude'] !== null ? autolinker.link(String(feature.properties['longitude']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['descriptio'] !== null ? autolinker.link(String(feature.properties['descriptio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
                         <th scope="row">source</th>\
                         <td class="visible-with-data" id="source">' + (feature.properties['source'] !== null ? autolinker.link(String(feature.properties['source']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
@@ -554,6 +551,7 @@
             },
         });
         bounds_group.addLayer(layer_HistoricalMarkers_5);
+        map.addLayer(layer_HistoricalMarkers_5);
         function pop_HistoricalPlaces_6(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
