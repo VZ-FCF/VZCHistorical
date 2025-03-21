@@ -43,7 +43,7 @@
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:2
-        })
+        }).fitBounds([[32.077911837194236,-96.18610646380313],[32.92457652602704,-95.2836541175807]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -103,7 +103,7 @@
             abstract.show = function () {
                 this._div.classList.remove("abstract");
                 this._div.classList.add("abstractUncollapsed");
-                this._div.innerHTML = 'Acknowledgements:<br />Texas Redistricting, PLANC2193, 2023: https://redistricting.capitol.texas.gov<br />Capitol Data Portal, 2024-2025:  https://data.capitol.texas.gov/dataset/school-districts<br />Texas Department of Transportation:  https://gis-txdot.opendata.arcgis.com/datasets/texas-county-boundaries-detailed/explore<br />United States Census,TIGER/Line® Shapefiles: https://www.census.gov/cgi-bin/geo/shapefiles/index.php<br />Edom Historical Society  Van Zandt County Map powered by: <br />QGIS: https://qgis.org/<br />GQIS2WEB: https://plugins.qgis.org/plugins/qgis2web/<br />GitHub: https://github.com/<br />Copyright OpenStreetMap Contributors CC-BY-SA';
+                this._div.innerHTML = 'Acknowledgements:<br />Texas Redistricting, PLANC2193, 2023: https://redistricting.capitol.texas.gov<br />Capitol Data Portal, 2024-2025:  https://data.capitol.texas.gov/dataset/school-districts<br />Texas Department of Transportation:  https://gis-txdot.opendata.arcgis.com/datasets/texas-county-boundaries-detailed/explore<br />United States Census,TIGER/Line® Shapefiles: https://www.census.gov/cgi-bin/geo/shapefiles/index.php<br />Edom Historical Society  Van Zandt County Map powered by: <br />QGIS: https://qgis.org/<br />GQIS2WEB: https://plugins.qgis.org/plugins/qgis2web/<br />Leaflet<br />GitHub: https://github.com/<br />Copyright OpenStreetMap Contributors CC-BY-SA';
         };
         abstract.addTo(map);
         var zoomControl = L.control.zoom({
@@ -111,9 +111,6 @@
         }).addTo(map);
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
-            if (bounds_group.getLayers().length) {
-                map.fitBounds(bounds_group.getBounds());
-            }
         }
         map.createPane('pane_OSMStandard_0');
         map.getPane('pane_OSMStandard_0').style.zIndex = 400;
@@ -700,7 +697,7 @@
             {label: '<img src="legend/MunicipalBoundaries_3.png" /> MunicipalBoundaries', layer: layer_MunicipalBoundaries_3},
             {label: 'ISD<br /><table><tr><td style="text-align: center;"><img src="legend/ISD_2_AthensISD0.png" /></td><td>Athens ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_BrownsboroISD1.png" /></td><td>Brownsboro ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_CantonISD2.png" /></td><td>Canton ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_EdgewoodISD3.png" /></td><td>Edgewood ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_FruitvaleISD4.png" /></td><td>Fruitvale ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_GrandSalineISD5.png" /></td><td>Grand Saline ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_LindaleISD6.png" /></td><td>Lindale ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_MabankISD7.png" /></td><td>Mabank ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_MartinsMillISD8.png" /></td><td>Martins Mill ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_VanISD9.png" /></td><td>Van ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_WillsPointISD10.png" /></td><td>Wills Point ISD</td></tr><tr><td style="text-align: center;"><img src="legend/ISD_2_EustaceISD11.png" /></td><td>Eustace ISD</td></tr></table>', layer: layer_ISD_2},
             {label: '<img src="legend/VanZandtCounty_1.png" /> VanZandtCounty', layer: layer_VanZandtCounty_1},
-            {label: "OSM Standard", layer: layer_OSMStandard_0},]
+            {label: "OSM Standard", layer: layer_OSMStandard_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
             //selectorBack: false,
@@ -732,6 +729,19 @@
                 variables: {}
             };
             layer.bindTooltip((layer.feature.properties['name'] !== null?String('<div style="color: #000000; font-size: 8pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Cemeteries_4'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_HistoricalMarkers_5.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['name'] !== null?String('<div style="color: #323232; font-size: 6pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_HistoricalMarkers_5'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
@@ -777,15 +787,15 @@
               addLabel(layer, i);
               i++;
         });
-        resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
+        resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalMarkers_5,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
         map.on("zoomend", function(){
-            resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
+            resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalMarkers_5,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
+            resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalMarkers_5,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
+            resetLabels([layer_ISD_2,layer_Cemeteries_4,layer_HistoricalMarkers_5,layer_HistoricalPlaces_6,layer_FlowingStreams_7,layer_CensusDesignatedPlaces_8]);
         });
         </script>
     </body>
